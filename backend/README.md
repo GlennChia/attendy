@@ -13,6 +13,7 @@ Create the app with `npm init`
 | nodemon            | ^2.0.2  | Detect changes and hot reload                                |
 | swagger-jsdoc      | ^3.5.0  |                                                              |
 | swagger-ui-express | ^4.1.3  |                                                              |
+| dotenv             | ^8.2.0  | To able reads from a .env file                               |
 
 # 2. Setting up
 
@@ -182,4 +183,44 @@ UserCredentials.find( { $or: [{'studentId' : studentId }, {'email': email}]}, fu
     }
 });
 ```
+
+## 2.3 Docker setup
+
+Link for the `Dockerfile` and `docker-compose.yml`: https://itnext.io/dockerize-a-node-js-app-connected-to-mongodb-64fdeca94797
+
+- The only thing I changed was to port forward to port 5000 which works. Hence I changed `"8080:8080"` to `"8080:5000"`
+- NOTE: I tried `"8080:6000"` to no avail
+
+Subsequently I could access Docker from either the localhost or the machine IP
+
+- http://localhost:8080/healthcheck (Doesn't work all the time strangely)
+- http://192.168.99.100:8080/healthcheck
+
+Shortcut to enter file: `~/Desktop/github_files/attendy/backend` to run docker commands
+
+<u>**Understanding port forwarding**</u> 
+
+`-p 8080:80`: Map TCP port 80 in the container to port 8080 on the Docker host.
+
+### 2.3.1 Useful Docker commands
+
+<u>**Compose commands**</u>
+
+- `docker-compose build`
+- `docker-compose up`
+- `docker-compose down`
+
+<u>**Other commands**</u>
+
+`docker ps`: Lists all the running containers and their ports
+
+![](assets/001_docker_ps.PNG)
+
+`docker image ls`: Lists all docker images
+
+![](assets/002_docker_image_ls.PNG)
+
+`docker-machine ls`: If you ever need the machine IP
+
+![](assets/003_docker_machine_ls.PNG)
 
