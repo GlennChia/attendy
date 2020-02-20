@@ -6,7 +6,7 @@ const configurations = {
     },
     'production': {
         'server': `http://localhost:${process.env.PORT_PROD}`,
-        'mongoURL': `mongodb://127.0.0.1/${process.env.mongoDatabase}`,
+        'mongoURL': `mongodb+srv://${process.env.mongoUsername}:${process.env.mongoPassword}@cluster1-lcqoc.mongodb.net/${process.env.mongoDatabase}?retryWrites=true&w=majority`,
         'port': process.env.PORT_PROD
     },
     'docker': {
