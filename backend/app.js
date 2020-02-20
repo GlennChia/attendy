@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require("express");
 const app = express();
 const bodyParser = require('body-parser');
@@ -8,9 +9,12 @@ const swaggerUi = require('swagger-ui-express');
 const generalRoute = require('./server/route/generalRoute');
 const userManagementRoute = require('./server/route/userManagement');
 
-const port = process.env.PORT || 5000;
+const allConfig = require('./config');
+const config = allConfig[process.env.environment];
 
-var mongoDB = 'mongodb://127.0.0.1/attendy_user';
+const port = config.PORT || 5000;
+
+var mongoDB = config.mongoURL;
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true } );
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
@@ -25,7 +29,7 @@ const swaggerOptions = {
         name: 'Glenn Chia',
         email: 'glenn_chia@mymail.sutd.edu.sg'
       },
-      servers: ['http://localhost:5000']
+      servers: [config.server]
     }
   },
   apis: ['app.js', './server/route/*.js', './server/database/models/*.js']
