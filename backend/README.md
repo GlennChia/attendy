@@ -288,3 +288,17 @@ Specifying the database in the url. Link: https://mongoosejs.com/docs/connection
 mongoose.connect('mongodb://username:password@host:port/database?options...', {useNewUrlParser: true});
 ```
 
+## 2.6 Logging setup
+
+### 2.6.1 Local logging
+
+Link: https://www.digitalocean.com/community/tutorials/how-to-use-winston-to-log-node-js-applications
+
+Packages needed: `winston` and `morgan` 
+
+Files edited: log.js and app.js
+
+Winston logs to both the `console` and the `file` and we can customize the logger to suit our needs
+
+IMPORTANT: We need to use The package `'app-root-path'` and in the `filename` parameter of `winston.transports.File` use `filename: ${appRoot}/log/app.log`. Using a relative path only cretes the log file if it does not exist but somehow does not write to it. This is the link the suggested that to me https://github.com/winstonjs/winston/issues/1001
+

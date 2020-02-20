@@ -4,6 +4,10 @@ const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
+var morgan = require('morgan');
+var winston = require('./common/util/log');
+app.use(morgan('combined', { stream: winston.stream }));
+
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const generalRoute = require('./server/route/generalRoute');
