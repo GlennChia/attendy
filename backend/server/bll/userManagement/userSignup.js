@@ -40,7 +40,7 @@ exports.userSignup = function (req, res) {
         });
         
     }
-    catch{
-        return res.status(500).send('server error' ); 
+    catch (err) {
+        return res.status(500).send( err ); 
     }
 }
