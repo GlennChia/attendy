@@ -184,6 +184,24 @@ UserCredentials.find( { $or: [{'studentId' : studentId }, {'email': email}]}, fu
 });
 ```
 
+Helpful points to get to the Mongo Database -> collection -> search all data
+
+```
+mongo
+use attendy
+db.usercredentialsmodels.find()
+```
+
+Dropping a database
+
+```
+show databases
+use <database_name>
+db.dropDatabase()
+```
+
+
+
 ## 2.3 Docker setup
 
 Link for the `Dockerfile` and `docker-compose.yml`: https://itnext.io/dockerize-a-node-js-app-connected-to-mongodb-64fdeca94797
