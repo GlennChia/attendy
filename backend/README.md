@@ -223,3 +223,50 @@ Shortcut to enter file: `~/Desktop/github_files/attendy/backend` to run docker c
 
 ![](assets/003_docker_machine_ls.PNG)
 
+## 2.4 Heroku setup
+
+Setting up the Procfile
+
+```
+web: node app.js
+```
+
+Check if the heroku app works locally
+
+```
+heroku local web
+```
+
+First login
+
+```
+heroku login
+```
+
+Then we set the current directory as a heroku directory
+
+```
+heroku git:remote -a attendy-geofi
+```
+
+Since we are deploying a sub-folder. Sub-folder is called `backend` 
+
+```
+git subtree push --prefix backend heroku master
+```
+
+Note: For the app to work, we have to use `process.env.PORT` as Heroku assigns its own port. Link: https://stackoverflow.com/questions/15693192/heroku-node-js-error-web-process-failed-to-bind-to-port-within-60-seconds-of
+
+## 2.5 MongoDB setup (Atlas)
+
+We have to allow IP from anywhere since Heroku's app IP changes. Useful link: https://www.freecodecamp.org/forum/t/setting-up-a-whitelist-in-mongo-db-atlas/236842 
+
+- Security -> Network Access -> Add Whitelist Entry -> Allow Access From Anywhere
+  ![](assets/004_mongo_whitelist.PNG)
+
+Specifying the database in the url. Link: https://mongoosejs.com/docs/connections.html
+
+```
+mongoose.connect('mongodb://username:password@host:port/database?options...', {useNewUrlParser: true});
+```
+
