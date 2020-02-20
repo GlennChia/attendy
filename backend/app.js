@@ -12,7 +12,7 @@ const userManagementRoute = require('./server/route/userManagement');
 const allConfig = require('./config');
 const config = allConfig[process.env.environment];
 
-const port = config.PORT || 5000;
+const port = process.env.PORT || 8080;
 
 var mongoDB = config.mongoURL;
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true } );

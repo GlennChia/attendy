@@ -134,7 +134,7 @@ Schema Design - userCredentialsModel.js
 
 
 
-## 2.2 MongoDB set up
+## 2.2 MongoDB set up (Locally)
 
 I used an ORM to make queries easier to perform. I defined the model in its own models folder and then called it in the `bll` folder. I connected to the database in the app.js file.
 
@@ -188,8 +188,7 @@ UserCredentials.find( { $or: [{'studentId' : studentId }, {'email': email}]}, fu
 
 Link for the `Dockerfile` and `docker-compose.yml`: https://itnext.io/dockerize-a-node-js-app-connected-to-mongodb-64fdeca94797
 
-- The only thing I changed was to port forward to port 5000 which works. Hence I changed `"8080:8080"` to `"8080:5000"`
-- NOTE: I tried `"8080:6000"` to no avail
+- Note: I had to change the port of the app to use `8080` and then change the `docker-compose.yml` file back to `8080:8080` for it to work
 
 Subsequently I could access Docker from either the localhost or the machine IP
 
