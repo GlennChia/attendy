@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 const User = require('../../database/models/userModel');
+const UserSession = require('../../database/models/userSessionModel');
 const constants = require('../../../common/constants');
 
 const facultyEmails = constants.facultyEmails;
@@ -44,9 +45,19 @@ exports.userSignup = function (req, res) {
                         return res.status(500).send('Database error'); 
                     }    
                     let jwttoken = jwt.sign({userId: userId}, process.env.JWT_KEY,{ expiresIn: '24h'});
-                    return res.status(200).send({
-                        _id: user._id,
+                    // Create userSession 
+                    let userSession = new UserSession({
+                        userId: userId,
                         token: jwttoken
+                    })
+                    userSession.save(function (err) {
+                        if (err) {
+                            return res.status(500).send('Database error'); 
+                        }  
+                        return res.status(200).send({
+                            _id: user._id,
+                            token: jwttoken
+                        });
                     });
                 });
             } else {                
