@@ -200,6 +200,12 @@ use <database_name>
 db.dropDatabase()
 ```
 
+Removing all documents from a collection
+
+```
+db.<collection_name>.remove()
+```
+
 
 
 ## 2.3 Docker setup
@@ -431,3 +437,11 @@ Note: Absent is populated at the end of the class when status is finished. Stude
 Use bcrypt to hash the password
 
 Create a jwt token upon signing up. Token created based on id.
+
+Then there will be an entry created in userSessions
+
+## 4.2 Login
+
+Create a jwt token upon Loggin in. Token created based on id.
+
+Then there will be an entry created in userSessions
