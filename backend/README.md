@@ -440,8 +440,18 @@ Create a jwt token upon signing up. Token created based on id.
 
 Then there will be an entry created in userSessions
 
+Currently we are returning the `_id` of the account created in MongoDB
+
 ## 4.2 Login
 
 Create a jwt token upon Loggin in. Token created based on id.
 
 Then there will be an entry created in userSessions
+
+## 4.3 Auxiliary methods
+
+We want to search for all and search for specific entries
+
+We also want to delete all entries and delete specific entries 
+
+This link could possibly be useful for having higher levels of authority for certain routes. https://jasonwatmore.com/post/2018/11/28/nodejs-role-based-authorization-tutorial-with-example-api
