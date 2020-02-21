@@ -24,7 +24,7 @@ const userSignup = require('../bll/userManagement/userSignup');
  *          $ref: '#/definitions/User'
  *    responses:
  *      200:
- *        description: "User has signed up"
+ *        description: User details with token
  *      400:
  *        description: "Some of the fields are blank"
  *      409:

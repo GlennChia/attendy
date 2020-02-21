@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const bcrypt = require('bcryptjs');
 
 /**
 * @swagger
@@ -7,7 +8,7 @@ const Schema = mongoose.Schema;
 *  User:
 *    type: object
 *    required:
-*      - studentId
+*      - userId
 *      - email
 *      - name
 *      - password 
@@ -21,12 +22,12 @@ const Schema = mongoose.Schema;
 *      password:
 *        type: string
 *        example: password123
-*      studentId:
+*      userId:
 *        type: string
 *        example: X12345
 */
 let User = new Schema({
-    studentId: {type: String},
+    userId: {type: String},
     name:{type: String},
     password: {type: String},
     email: {type: String},
@@ -36,5 +37,11 @@ let User = new Schema({
     }]
 });
 
+User.methods.generateHash = function(password){
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+}
+User.methods.validPassword = function(password){
+    return bcrypt.compareSync(password, this.password);
+};
 
 module.exports = mongoose.model('user', User);

@@ -424,3 +424,10 @@ Note: Absent is populated at the end of the class when status is finished. Stude
 |      | status             | punctual, late, absent. Default: Absent. Changed only when the user makes changes. Time based |
 |      | timeIn             | In case we need to do manual verification                    |
 
+# 4. User management
+
+## 4.1 Signup
+
+Use bcrypt to hash the password
+
+Create a jwt token upon signing up. Token created based on id.
