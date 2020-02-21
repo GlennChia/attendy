@@ -5,7 +5,8 @@ const UserSession = require('../../database/models/userSessionModel');
 const constants = require('../../../common/constants');
 
 exports.userLogin = function (req, res) {
-    const{ userId, password } = req.query;
+    // const{ userId, password } = req.query;
+    const{ userId, password } = req.body;
 
     if( !password || !userId ){
         return res.status(400).send('Missing Entry');
@@ -28,6 +29,7 @@ exports.userLogin = function (req, res) {
                     }  
                     return res.status(200).send({
                         _id: docs[0]._id,  // This is the mongo created ID
+                        authority: docs[0].authority,
                         token: jwttoken
                     });
                 });

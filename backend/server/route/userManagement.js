@@ -37,7 +37,7 @@ router.post('/signup', userSignup.userSignup);
 /**
  * @swagger
  * /login:
- *  get:
+ *  post:
  *    tags:
  *      - User Management
  *    summary: "Login for an existing user"
@@ -47,18 +47,22 @@ router.post('/signup', userSignup.userSignup);
  *    produces:
  *      - application/json
  *    parameters:
- *      - in: query
- *        name: userId
+ *      - in: body
+ *        name: user
  *        schema:
- *          type: string
- *          example: X12345
- *        description: userId that was used to create account
- *      - in: query  
- *        name: password
- *        schema:
- *          type: string
- *          example: password123
- *        description: Password that was used to sign up
+ *          type: object
+ *          required:
+ *            - userId
+ *            - password
+ *          properties:
+ *            userId:
+ *              type: string
+ *              example: X12345
+ *              description: userId that was used to create account
+ *            password:
+ *              type: string
+ *              example: password123
+ *              description: Password that was used to sign up
  *    responses:
  *      200:
  *        description: User details with token
@@ -71,7 +75,7 @@ router.post('/signup', userSignup.userSignup);
  *      500:
  *        description: "Database or server error"
  */ 
-router.get('/login', userLogin.userLogin);
+router.post('/login', userLogin.userLogin);
 
 
 module.exports = router;
