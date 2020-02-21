@@ -4,10 +4,13 @@ const Schema = mongoose.Schema;
 /**
 * @swagger
 * definitions:
-*  UserCredentialsModel:
+*  User:
 *    type: object
 *    required:
-*      - userName
+*      - studentId
+*      - email
+*      - name
+*      - password 
 *    properties:
 *      name:
 *        type: string
@@ -22,12 +25,16 @@ const Schema = mongoose.Schema;
 *        type: string
 *        example: X12345
 */
-let UserCredentialsModel = new Schema({
+let User = new Schema({
     studentId: {type: String},
     name:{type: String},
     password: {type: String},
     email: {type: String},
+    authority: {type: String},
+    subjects: [{
+        type: String
+    }]
 });
 
 
-module.exports = mongoose.model('userCredentialsModel', UserCredentialsModel);
+module.exports = mongoose.model('user', User);

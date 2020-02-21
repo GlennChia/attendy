@@ -1,4 +1,7 @@
-const UserCredentials = require('../../database/models/userCredentialsModel');
+const User = require('../../database/models/userModel');
+const constants = require('../../../common/constants');
+
+const facultyEmails = constants.facultyEmails;
 
 exports.userSignup = function (req, res) {
     const{body} = req;
@@ -18,21 +21,26 @@ exports.userSignup = function (req, res) {
         return res.status(400).send("Email incorrect");
     }
 
-    let user = new UserCredentials({ 
+    // Check authority: faculty or student 
+    var authority = (facultyEmails.includes(email)) ? "faculty" : "student";
+
+    let user = new User({ 
         studentId: studentId,
         name:name,
         password: password,
         email: email,
+        authority: authority,
+        subjects: constants.subjectsDefault
     });
 
     try {
-        UserCredentials.find( { $or: [{'studentId' : studentId }, {'email': email}]}, function (err, docs) {
+        User.find( { $or: [{'studentId' : studentId }, {'email': email}]}, function (err, docs) {
             if (!docs.length){
                 user.save(function (err) {
                     if (err) {
                         return res.status(500).send('Database error'); 
                     } 
-                    return res.status(200).send('successful registration');   
+                    return res.status(200).send(user);   
                 });
             } else {                
                 return res.status(409).send('User Exists'); 

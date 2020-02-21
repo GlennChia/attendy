@@ -21,7 +21,7 @@ const userSignup = require('../bll/userManagement/userSignup');
  *        name: user
  *        description: User sign up 
  *        schema:
- *          $ref: '#/definitions/UserCredentialsModel'
+ *          $ref: '#/definitions/User'
  *    responses:
  *      200:
  *        description: "User has signed up"
