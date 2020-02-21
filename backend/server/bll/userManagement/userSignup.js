@@ -56,6 +56,7 @@ exports.userSignup = function (req, res) {
                         }  
                         return res.status(200).send({
                             _id: user._id,
+                            authority: user.authority, // In case we want multiple screens
                             token: jwttoken
                         });
                     });
