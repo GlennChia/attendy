@@ -14,6 +14,7 @@ const generalRoute = require('./server/route/generalRoute');
 const userManagementRoute = require('./server/route/userManagement');
 const subjectManagementRoute = require('./server/route/subjectManagement');
 const lessonManagementRoute = require('./server/route/lessonManagement');
+const attendanceManagementRoute = require('./server/route/attendanceManagement');
 
 const allConfig = require('./config');
 const config = allConfig[process.env.environment];
@@ -45,7 +46,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs, { explorer: t
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
-app.use('/', generalRoute, userManagementRoute, subjectManagementRoute, lessonManagementRoute);
+app.use('/', generalRoute, userManagementRoute, subjectManagementRoute, lessonManagementRoute, attendanceManagementRoute);
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
