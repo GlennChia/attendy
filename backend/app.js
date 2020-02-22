@@ -13,12 +13,12 @@ const swaggerUi = require('swagger-ui-express');
 const generalRoute = require('./server/route/generalRoute');
 const userManagementRoute = require('./server/route/userManagement');
 const subjectManagementRoute = require('./server/route/subjectManagement');
+const lessonManagementRoute = require('./server/route/lessonManagement');
 
 const allConfig = require('./config');
 const config = allConfig[process.env.environment];
 
 const port = process.env.PORT || 8080;
-
 var mongoDB = config.mongoURL;
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true } );
 var db = mongoose.connection;
@@ -45,7 +45,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs, { explorer: t
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
-app.use('/', generalRoute, userManagementRoute, subjectManagementRoute);
+app.use('/', generalRoute, userManagementRoute, subjectManagementRoute, lessonManagementRoute);
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
