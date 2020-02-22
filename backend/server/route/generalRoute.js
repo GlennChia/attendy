@@ -1,7 +1,7 @@
 const express = require('express');
 let router = express.Router();
 
-const userSearch = require('../bll/userManagement/userAuxiliary');
+const userFunctions = require('../bll/userManagement/userAuxiliary');
 
 /**
  * @swagger
@@ -47,6 +47,35 @@ router.get('/healthcheck', (req, res) => {
  *      500:
  *        description: Database or server error
  */ 
-router.get('/user/search', userSearch.userSearchAuxiliary);
+router.get('/user/search', userFunctions.userSearchAuxiliary);
+
+/**
+ * @swagger
+ * /user/delete:
+ *  delete:
+ *    tags:
+ *      - Auxiliary
+ *    summary: Delete a user based on the userId
+ *    description: Delete a single user based on the userId that the student signed up with
+ *    consumes:
+ *      - application/json
+ *    produces:
+ *      - application/json
+ *    parameters:
+ *      - in: query
+ *        name: userId
+ *        schema:
+ *          type: string
+ *          example: X123456
+ *        description: userId that was used to create account
+ *    responses:
+ *      200:
+ *        description: Returns found users
+ *      409:
+ *        description: User does not exist
+ *      500:
+ *        description: Database or server error
+ */ 
+router.delete('/user/delete', userFunctions.userDeleteAuxiliary);
 
 module.exports = router;
