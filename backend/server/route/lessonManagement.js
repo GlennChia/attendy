@@ -3,6 +3,7 @@ let router = express.Router();
 
 const lessonCreation = require('../bll/lessonManagement/lessonCreation');
 const lessonSearch = require('../bll/lessonManagement/lessonSearch');
+const lessonSelect = require('../bll/lessonManagement/lessonSelection');
 
 /**
  * @swagger
@@ -61,5 +62,29 @@ router.post('/lesson/create', lessonCreation.lessonCreation);
  */ 
 router.get('/lesson/search', lessonSearch.lessonSearch);
 
+/**
+ * @swagger
+ * /lesson/select:
+ *    post:
+ *      tags:
+ *          - Lesson Management
+ *      summary: User adds lesson
+ *      description: Select lesson and add it to the attendance database 
+ *      parameters:
+ *      - in: body
+ *        name: attendance
+ *        description: Document format
+ *        schema:
+ *          $ref: '#/definitions/Attendance'
+ *      responses:
+ *        201:
+ *          description: Successfully added lesson
+ *        204:
+ *          description: Conditions not fulfilled
+ *        500:
+ *          description: Database or server error
+ * 
+ */
+router.post('/lesson/select', lessonSelect.lessonSelect);
 
 module.exports = router;
