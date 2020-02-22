@@ -12,6 +12,7 @@ const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const generalRoute = require('./server/route/generalRoute');
 const userManagementRoute = require('./server/route/userManagement');
+const subjectManagementRoute = require('./server/route/subjectManagement');
 
 const allConfig = require('./config');
 const config = allConfig[process.env.environment];
@@ -44,7 +45,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs, { explorer: t
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
-app.use('/', generalRoute, userManagementRoute);
+app.use('/', generalRoute, userManagementRoute, subjectManagementRoute);
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
