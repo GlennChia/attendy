@@ -26,8 +26,8 @@ router.get('/healthcheck', (req, res) => {
  *  get:
  *    tags:
  *      - Auxiliary
- *    summary: "Login for an existing user"
- *    description: Attendy User Logins
+ *    summary: Search for user details
+ *    description: Search for specific users based on their userID. Defaults to find all users
  *    consumes:
  *      - application/json
  *    produces:
