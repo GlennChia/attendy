@@ -25,9 +25,13 @@ const bcrypt = require('bcryptjs');
 *      userId:
 *        type: string
 *        example: X12345
+*      berkeleyId:
+*        type: string
+*        example: 301231241241
 */
 let User = new Schema({
     userId: {type: String},
+    berkeleyId: {type: String},
     name:{type: String},
     password: {type: String},
     email: {type: String},

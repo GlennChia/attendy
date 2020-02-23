@@ -2,14 +2,15 @@ const jwt = require('jsonwebtoken');
 
 const User = require('../../database/models/userModel');
 const UserSession = require('../../database/models/userSessionModel');
+const Attendance = require('../../database/models/attendanceModel');
 const constants = require('../../../common/constants');
 
 const facultyEmails = constants.facultyEmails;
 
 exports.userSignup = function (req, res) {
     const{body} = req;
-    const{ name, password } = body;
-    let{ email, userId } = body;
+    const{ password, berkeleyId } = body;
+    let{ name, email, userId } = body;
 
     if(!name || !password || !email || !userId){
         return res.status(400).send('Missing Entry');
@@ -17,6 +18,7 @@ exports.userSignup = function (req, res) {
 
     email = email.toLowerCase();
     userId = userId.toUpperCase();
+    name = name.toLowerCase();
 
     const emailRegexp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
     
@@ -29,6 +31,7 @@ exports.userSignup = function (req, res) {
 
     let user = new User({ 
         userId: userId,
+        berkeleyId: berkeleyId,
         name:name,
         email: email,
         authority: authority,
@@ -54,11 +57,31 @@ exports.userSignup = function (req, res) {
                         if (err) {
                             return res.status(500).send('Database error'); 
                         }  
-                        return res.status(200).send({
-                            _id: user._id,
-                            authority: user.authority, // In case we want multiple screens
-                            token: jwttoken
-                        });
+                        // For convenience add the classes
+                        let attendanceFormatted = [];
+                        for (i = 0; i < constants.lessonsDefault.lessons.length; i++) {
+                            //let className = constants.lessonsDefault.lessons[i];
+                            attendanceFormatted.push(                               
+                                new Attendance({
+                                    subjectName: constants.lessonsDefault[constants.lessonsDefault.lessons[i]].subjectName,
+                                    lessonName: `class ${i+1}`,
+                                    userName: name,
+                                    berkeleyId: berkeleyId,
+                                    userId: userId,
+                                })
+                            );
+                        }
+                        Attendance.insertMany(attendanceFormatted, function (err, docs) {
+                            if (err){
+                                return res.status(500).send( err ); 
+                            } else {                
+                                return res.status(200).send({
+                                    userId: userId,
+                                    authority: user.authority, // In case we want multiple screens
+                                    token: jwttoken
+                                });
+                            }
+                        });          
                     });
                 });
             } else {                
