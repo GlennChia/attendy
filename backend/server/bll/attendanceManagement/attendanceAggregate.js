@@ -11,11 +11,20 @@ exports.attendanceAggregate = function (req, res) {
             if (docs.length){
                 for (i = 0; i < docs.length; i++) {
                     if(docs[i].status == 'punctual'){
-                        punctualStudents.push(docs[i].userId);
+                        punctualStudents.push({
+                            name: docs[i].userName,
+                            userId: docs[i].userId,
+                        });
                     } else if (docs[i].status == 'late'){
-                        lateStudents.push(docs[i].userId);
+                        lateStudents.push({
+                            name: docs[i].userName,
+                            userId: docs[i].userId,
+                        });
                     } else {
-                        absentStudents.push(docs[i].userId)
+                        absentStudents.push({
+                            name: docs[i].userName,
+                            userId: docs[i].userId,
+                        });
                     }
                 }
                 return res.status(200).send({
