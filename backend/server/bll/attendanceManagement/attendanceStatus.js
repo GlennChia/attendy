@@ -5,26 +5,13 @@ exports.attendanceStatus = function (req, res) {
     const searchParameters = req.query;
 
     try {
-        Lesson.find( {'_id': searchParameters.lessonId}, function (err, docs) {
+        Attendance.find( searchParameters, function (err, docs) {
             if (docs.length){
-                if (Date.now() < docs[0].startTime){
-                    return res.status(200).send('Lesson not started');
-                } else if (Date.now() >= docs[0].startTime){
-                    Attendance.find( searchParameters, function (err, docs) {
-                        if (docs.length){
-                            return res.status(200).send( docs );
-                        } else if (err) {
-                            return res.status(500).send(err);
-                        } else {                
-                            return res.status(409).send('Either invalid lessonId, subjectId or userId'); 
-                        }
-                    });
-                }   
+                return res.status(200).send( docs );
             } else if (err) {
                 return res.status(500).send(err);
-            }
-            else {                
-                return res.status(409).send('Either invalid lessonId or the lesson does not exist'); 
+            } else {                
+                return res.status(409).send('Either invalid lessonId, subjectId or userId'); 
             }
         });
     }
