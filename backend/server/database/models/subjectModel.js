@@ -17,12 +17,11 @@ const Schema = mongoose.Schema;
 *        type: array
 *        items:
 *          type: string
-*        example: []
-*        description: List of class Ids that will be appended to the array
+*        example: ['class 1', 'class 2', 'class 3', 'class 4', 'class 5']
+*        description: List of class names
 */
 let Subject = new Schema({
     name:{type: String},
-    // Classes are not that critical to be tracked here because later we sort by subject and class
     classes: { type: Array, default: []}
 });
 
