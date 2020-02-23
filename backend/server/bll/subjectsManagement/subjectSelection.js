@@ -6,8 +6,7 @@ const User = require('../../database/models/userModel');
 exports.subjectSelection = async function (req, res) {
     const searchParameters = req.query;
     try{
-        let doc = await User.findOneAndUpdate( {$and:[{'userId': searchParameters.userId}, {'subjects':{$nin: [searchParameters.subjectId]}}]}, {$push: {subjects: searchParameters.subjectId}}).maxTimeMS(3000);
-        console.log(doc)
+        let doc = await User.findOneAndUpdate( {$and:[{'userId': searchParameters.userId}, {'subjects':{$nin: [searchParameters.name]}}]}, {$push: {subjects: searchParameters.name}}).maxTimeMS(3000);
         if (doc) {
             return res.status(201).send('successfully updated subjects'); 
         } else {
