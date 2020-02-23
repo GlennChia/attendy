@@ -8,52 +8,28 @@ const Schema = mongoose.Schema;
 *    type: object
 *    required:
 *      - name
-*      - subjectId
+*      - subjectName
 *      - classDate
-*      - startTime
-*      - lateTime
-*      - endTime
-*      - seatingPlan
-*      - location 
+*      - status
 *    properties:
 *      name:
 *        type: string
 *        example: class 1
-*      subjectId:
+*      subjectName:
 *        type: string
-*        example: 123213
+*        example: 'Entrepreneurial Leadership'
 *      classDate:
 *        type: string
 *        example: 28 Feb 2020
-*      startTime:
-*        type: Number
-*        example: 1582320600000
-*      lateTime:
-*        type: Number
-*        example: 1582321200000
-*      endTime:
-*        type: Number
-*        example: 1582331400000
-*      seatingPlan:
-*        type: Array
-*        example: [1,4,2,5,6,8,7,3]
-*      location:
-*        type: Array
-*        example: [37.7913, 122.3937]
+*      status:
+*        type: string
+*        example: closed
 */
 let Lesson = new Schema({
     name: {type: String},
-    subjectId: {type: String},
+    subjectName: {type: String},
     classDate: {type: String},
-    startTime: {type: Number},
-    lateTime: {type: Number},
-    endTime: {type: Number},
-    seatingPlan: [{
-        type: Number
-    }],
-    location: [{
-        type: Number
-    }],
+    status: {type: String},
 });
 
 
