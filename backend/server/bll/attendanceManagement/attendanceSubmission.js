@@ -20,7 +20,7 @@ exports.attendanceSubmission = function (req, res) {
                             Attendance.findOneAndUpdate( {$and: [{'subjectName': subjectName}, {'userId': docUser[0].userId}, {'lessonName': lessonName}, {'status': 'absent'}]}, {$set: {status: docs[0].status, timeIn: new Date()}}, function(errAtt, docsAtt){
                                 if (errAtt){
                                     return res.status(500).send(errAtt)
-                                } else if (docsAtt.length){
+                                } else if (docsAtt){
                                     return res.status(201).send('successfully updated attendance'); 
                                 } else {
                                     return res.status(409).send('Attendance already recorded'); 
@@ -35,7 +35,7 @@ exports.attendanceSubmission = function (req, res) {
                                     Attendance.findOneAndUpdate( {$and: [{'subjectName': subjectName}, {'userId': fuzzyUser.userId}, {'lessonName': lessonName}, {'status': 'absent'}]}, {$set: {status: docs[0].status, timeIn: new Date()}}, function(errAtt2, docsAtt2){
                                         if (errAtt2){
                                             return res.status(500).send(errAtt2)
-                                        } else if (docsAtt2.length){
+                                        } else if (docsAtt2){
                                             return res.status(201).send('successfully updated attendance'); 
                                         } else {
                                             return res.status(409).send('Attendance already recorded'); 
