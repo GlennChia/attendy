@@ -28,7 +28,7 @@ exports.userLogin = function (req, res) {
                         return res.status(500).send('Database error'); 
                     }  
                     return res.status(200).send({
-                        _id: docs[0]._id,  // This is the mongo created ID
+                        userId: userId,  // This is the actual userID
                         authority: docs[0].authority,
                         token: jwttoken
                     });
