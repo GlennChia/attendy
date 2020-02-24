@@ -33,7 +33,7 @@ const attendanceStatus = require('../bll/attendanceManagement/attendanceStatus')
  *              description: userName that the OCR recognizes
  *            berkeleyId:
  *              type: string
- *              example: 3123124124312321
+ *              example: '3123124124312321'
  *              description: Long Id that is recognized by the OCR
  *            subjectName:
  *              type: string

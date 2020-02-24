@@ -33,7 +33,7 @@ const Schema = mongoose.Schema;
 *        example: Glenn 
 *      berkeleyId:
 *        type: string
-*        example: 1231412312312
+*        example: '1231412312312'
 */
 let Attendance = new Schema({
     subjectName: {type: String},
