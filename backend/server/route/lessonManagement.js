@@ -123,7 +123,7 @@ router.post('/lesson/select', lessonSelect.lessonSelect);
  *            example: punctual
  *      responses:
  *        201:
- *          description: Successfully added subject
+ *          description: Successfully updated lesson status
  *        204:
  *          description: Conditions not fulfilled
  *        500:
