@@ -57,38 +57,46 @@ exports.userSignup = function (req, res) {
                         if (err) {
                             return res.status(500).send('Database error'); 
                         }  
-                        // For convenience add the classes
-                        let attendanceFormatted = [];
-                        for (i = 0; i < constants.lessonsDefault.lessons.length; i++) {
-                            //let className = constants.lessonsDefault.lessons[i];
-                            attendanceFormatted.push(                               
-                                new Attendance({
-                                    subjectName: constants.lessonsDefault[constants.lessonsDefault.lessons[i]].subjectName,
-                                    lessonName: `class ${i+1}`,
-                                    userName: name,
-                                    berkeleyId: berkeleyId,
-                                    userId: userId,
-                                })
-                            );
-                        }
-                        Attendance.insertMany(attendanceFormatted, function (err, docs) {
-                            if (err){
-                                return res.status(500).send( err ); 
-                            } else {                
-                                return res.status(200).send({
-                                    userId: userId,
-                                    authority: user.authority, // In case we want multiple screens
-                                    token: jwttoken
-                                });
+                        // if the authority is student then we can create the attendance
+                        if (authority == 'student'){
+                            // For convenience add the classes
+                            let attendanceFormatted = [];
+                            for (i = 0; i < constants.lessonsDefault.lessons.length; i++) {
+                                //let className = constants.lessonsDefault.lessons[i];
+                                attendanceFormatted.push(                               
+                                    new Attendance({
+                                        subjectName: constants.lessonsDefault[constants.lessonsDefault.lessons[i]].subjectName,
+                                        lessonName: `class ${i+1}`,
+                                        userName: name,
+                                        berkeleyId: berkeleyId,
+                                        userId: userId,
+                                    })
+                                );
                             }
-                        });          
+                            Attendance.insertMany(attendanceFormatted, function (err, docs) {
+                                if (err){
+                                    return res.status(500).send( err ); 
+                                } else {                
+                                    return res.status(200).send({
+                                        userId: userId,
+                                        authority: user.authority, // In case we want multiple screens
+                                        token: jwttoken
+                                    });
+                                }
+                            });  
+                        } else {
+                            return res.status(200).send({
+                                userId: userId,
+                                authority: user.authority, // In case we want multiple screens
+                                token: jwttoken
+                            });
+                        }           
                     });
                 });
             } else {                
                 return res.status(409).send('User Exists'); 
             }
         });
-        
     }
     catch (err) {
         return res.status(500).send( err ); 
