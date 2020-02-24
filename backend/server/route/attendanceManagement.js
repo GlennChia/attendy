@@ -4,6 +4,7 @@ let router = express.Router();
 const attendanceAggregate = require('../bll/attendanceManagement/attendanceAggregate');
 const attendanceSubmission = require('../bll/attendanceManagement/attendanceSubmission');
 const attendanceStatus = require('../bll/attendanceManagement/attendanceStatus');
+const attendanceUserIdentification = require('../bll/attendanceManagement/attendanceUserIdentification');
 /**
  * @swagger
  * /attendance/submission:
@@ -123,5 +124,37 @@ router.get('/attendance/status', attendanceStatus.attendanceStatus);
  */
 router.get('/attendance/aggregate', attendanceAggregate.attendanceAggregate);
 
+/**
+ * @swagger
+ * /attendance/identification:
+ *  get:
+ *    tags:
+ *      - Attendance Management
+ *    summary: Get the user details based on the name and berkeleyId
+ *    description: Get the user details based on the name and berkeleyId. If not found, do a fuzzy match on the name
+ *    consumes:
+ *      - application/json
+ *    produces:
+ *      - application/json
+ *    parameters:
+ *      - in: query
+ *        name: userName
+ *        schema:
+ *          type: string
+ *          example: glender
+ *        description: name as detected by OCR
+ *      - in: query
+ *        name: berkeleyId
+ *        schema:
+ *          type: string
+ *          example: 12312412412312
+ *        description: berkeleyId as detected by OCR
+ *    responses:
+ *      200:
+ *        description: Returns student data
+ *      500:
+ *        description: Database or server error
+ */ 
+router.get('/attendance/identification', attendanceUserIdentification.attendanceUserIdentification);
 
 module.exports = router;
