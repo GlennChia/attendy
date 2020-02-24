@@ -1,8 +1,12 @@
-require('dotenv').config()
+require('dotenv').config();
 const express = require("express");
+var cors = require('cors');
 const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+
+app.use(cors());
+
 
 var morgan = require('morgan');
 var winston = require('./common/util/log');
