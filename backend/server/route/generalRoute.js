@@ -3,6 +3,7 @@ let router = express.Router();
 
 const userFunctions = require('../bll/userManagement/userAuxiliary');
 const lessonFunctions = require('../bll/lessonManagement/lessonBulkCreation');
+const attendanceFunctions = require('../bll/attendanceManagement/attendanceReset');
 /**
  * @swagger
  * /healthcheck:
@@ -143,5 +144,33 @@ router.delete('/user/delete', userFunctions.userDeleteAuxiliary);
  *        description: Database or server error
  */ 
 router.post('/lesson/bulk', lessonFunctions.lessonBulkCreation);
+
+/**
+ * @swagger
+ * /attendance/reset:
+ *    put:
+ *      tags:
+ *          - Auxiliary
+ *      summary: Change the status of all attendance records for testing purposes
+ *      description: Take in the status to change to, either absent, punctual or late
+ *      parameters:
+ *        - name: status
+ *          in: query
+ *          description: Status to change to, either absent, punctual or late
+ *          required: true
+ *          schema:
+ *            type: string
+ *            format: string
+ *            example: absent
+ *      responses:
+ *        201:
+ *          description: Successfully updated all status
+ *        409:
+ *          description: No documents to update
+ *        500:
+ *          description: Database or server error
+ * 
+ */
+router.put('/attendance/reset', attendanceFunctions.attendanceReset);
 
 module.exports = router;
