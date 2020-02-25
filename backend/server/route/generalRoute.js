@@ -4,6 +4,7 @@ let router = express.Router();
 const userFunctions = require('../bll/userManagement/userAuxiliary');
 const lessonFunctions = require('../bll/lessonManagement/lessonBulkCreation');
 const attendanceFunctions = require('../bll/attendanceManagement/attendanceReset');
+const attendanceAuxiliary = require('../bll/attendanceManagement/attendanceAuxiliary');
 /**
  * @swagger
  * /healthcheck:
@@ -172,5 +173,34 @@ router.post('/lesson/bulk', lessonFunctions.lessonBulkCreation);
  * 
  */
 router.put('/attendance/reset', attendanceFunctions.attendanceReset);
+
+/**
+ * @swagger
+ * /attendance/delete:
+ *  delete:
+ *    tags:
+ *      - Auxiliary
+ *    summary: Delete attendance record for the user based on the userId
+ *    description: Delete attendance record for the user based on the userId. If nothing provided then delete all
+ *    consumes:
+ *      - application/json
+ *    produces:
+ *      - application/json
+ *    parameters:
+ *      - in: query
+ *        name: userId
+ *        schema:
+ *          type: string
+ *          example: X12345
+ *        description: userId that was used to create account
+ *    responses:
+ *      200:
+ *        description: Successful deletion
+ *      409:
+ *        description: User does not exist
+ *      500:
+ *        description: Database or server error
+ */ 
+router.delete('/attendance/delete', attendanceAuxiliary.attendanceDeleteAuxiliary);
 
 module.exports = router;
