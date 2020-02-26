@@ -6,7 +6,7 @@ exports.attendanceSubmission = function (req, res) {
     // At this stage we assume that the user entry is already there and we matched the ID
     const {subjectName, lessonName, berkeleyId } = req.body;
     let { userName } = req.body;
-    userName = userName.toLowerCase();
+    userName = userName.toUpperCase();
 
     try {
         Lesson.find( {name: lessonName}, function (err, docs) {

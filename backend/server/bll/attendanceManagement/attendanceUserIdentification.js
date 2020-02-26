@@ -3,7 +3,7 @@ const User = require('../../database/models/userModel');
 exports.attendanceUserIdentification = function (req, res) {
     const berkeleyId  = req.query.berkeleyId;
     let userName = req.query.userName;
-    userName = userName.toLowerCase();
+    userName = userName.toUpperCase();
 
     try {
         User.find({$or:[{name: userName}, {berkeleyId: berkeleyId}]}, function(errUser, docUser){

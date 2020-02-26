@@ -18,7 +18,7 @@ exports.userSignup = function (req, res) {
 
     email = email.toLowerCase();
     userId = userId.toUpperCase();
-    name = name.toLowerCase();
+    name = name.toUpperCase();
 
     const emailRegexp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
     
