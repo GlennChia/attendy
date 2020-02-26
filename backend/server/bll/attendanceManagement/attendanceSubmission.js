@@ -17,6 +17,7 @@ exports.attendanceSubmission = function (req, res) {
                     // Find the userId from the users table to search the attendance table
                     User.find({$or:[{name: userName}, {berkeleyId: berkeleyId}]}, function(errUser, docUser){
                         if(docUser.length){
+                            console.log(docUser)
                             Attendance.findOneAndUpdate( {$and: [{'subjectName': subjectName}, {'userId': docUser[0].userId}, {'lessonName': lessonName}, {'status': 'absent'}]}, {$set: {status: docs[0].status, timeIn: new Date()}}, function(errAtt, docsAtt){
                                 if (errAtt){
                                     return res.status(500).send(errAtt)
@@ -30,7 +31,7 @@ exports.attendanceSubmission = function (req, res) {
                             return res.status(500).send(errUser);
                         } else {
                             User.fuzzySearch(userName, function(errUser2, docUser2){
-                                if(docUser2){
+                                if(docUser2.length){
                                     const fuzzyUser = docUser2[0];
                                     Attendance.findOneAndUpdate( {$and: [{'subjectName': subjectName}, {'userId': fuzzyUser.userId}, {'lessonName': lessonName}, {'status': 'absent'}]}, {$set: {status: docs[0].status, timeIn: new Date()}}, function(errAtt2, docsAtt2){
                                         if (errAtt2){
@@ -41,6 +42,10 @@ exports.attendanceSubmission = function (req, res) {
                                             return res.status(409).send('Attendance already recorded'); 
                                         }
                                     });
+                                } else if (errUser2){
+                                    return res.status(500).send(errUser2);
+                                } else {
+                                    return res.status(404).send('User not found');
                                 }
                             });
                         }
