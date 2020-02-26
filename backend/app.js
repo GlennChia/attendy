@@ -48,6 +48,8 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 app.use('/', generalRoute, userManagementRoute, subjectManagementRoute, lessonManagementRoute, attendanceManagementRoute);
 
-app.listen(port, () => {
+let server = app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
+
+module.exports = server
