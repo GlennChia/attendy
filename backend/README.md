@@ -308,6 +308,72 @@ Winston logs to both the `console` and the `file` and we can customize the logge
 
 IMPORTANT: We need to use The package `'app-root-path'` and in the `filename` parameter of `winston.transports.File` use `filename: ${appRoot}/log/app.log`. Using a relative path only cretes the log file if it does not exist but somehow does not write to it. This is the link the suggested that to me https://github.com/winstonjs/winston/issues/1001
 
+## 2.7 Tests
+
+### 2.7.1 Mocha tests
+
+Link: https://buddy.works/guides/how-automate-nodejs-unit-tests-with-mocha-chai
+
+Link 2: https://semaphoreci.com/community/tutorials/getting-started-with-node-js-and-mocha
+
+Download the testing packages
+
+```bash
+npm install request --save-dev
+npm install mocha chai --save-dev
+```
+
+<u>**Setting up the health check tests**</u>
+
+app.js - we have to export the app and import it in the test.js file so that it will call it and run `app.listen`
+
+```javascript
+let server = app.listen(port, () => {
+  console.log(`Server listening on port ${port}`);
+});
+
+module.exports = server
+```
+
+test.js
+
+```javascript
+var expect  = require('chai').expect;
+var request = require('request');
+
+const server = require('../app');
+
+console.log(server)
+it('healthcheck', function(done) {
+    request('http://localhost:8080/healthcheck' , function(error, response, body) {
+        expect(body).to.equal('Server is healthy');
+        done();
+    });
+});
+```
+
+Then we need to configure package.json to run the test when the command is used
+
+```json
+"scripts": {
+    "start": "nodemon app.js",
+    "test": "mocha --timeout 10000 --exit"
+},
+```
+
+- I set `--timeout 10000` because there could be some APIs that will take longer. Link: https://github.com/mochajs/mocha/issues/2025
+- I also set it to `--exit` immediately after the tests. This replicates the pre version 4 behaviour (There are some caveats though). Link: https://boneskull.com/mocha-v4-nears-release/#mochawontforceexit and https://github.com/mochajs/mocha/issues/3044
+
+<u>**Running the tests**</u>
+
+```
+npm test
+```
+
+
+
+
+
 # 3. System Design
 
 ## 3.1  Requirements and goals of the system
