@@ -1,53 +1,56 @@
 const Lesson = require('../../database/models/lessonModel');
 const Attendance = require('../../database/models/attendanceModel');
-
-
-var arraysMatch = function (arr1, arr2) {
-	if (arr1.length !== arr2.length) return false;
-
-	for (var i = 0; i < arr1.length; i++) {
-		if (arr1[i] !== arr2[i]) return false;
-	}
-	return true;
-
-};
+const User = require('../../database/models/userModel');
     
 exports.attendanceSubmission = function (req, res) {
-    const {lessonId, seatingPlan, userId} = req.body;
+    // At this stage we assume that the user entry is already there and we matched the ID
+    const {subjectName, lessonName, berkeleyId } = req.body;
+    let { userName } = req.body;
+    userName = userName.toUpperCase();
 
     try {
-        Lesson.find( {'_id': lessonId}, function (err, docs) {
+        Lesson.find( {name: lessonName}, function (err, docs) {
             if (docs.length){
-                if (arraysMatch(docs[0].seatingPlan, seatingPlan)){
-                    // update the attendance
-                    Attendance.find({$and: [{'lessonId': lessonId}, {'userId': userId}, {'subjectId': docs[0].subjectId}]}, function(errAtt, docAtt) {
-                        if(errAtt){
-                            return res.status(500).send('Database error');
-                        } else if(docs.length){
-                            // punctual
-                            if (Date.now() <= docs[0].lateTime){
-                                docAtt[0].status = 'punctual';
-                                docAtt[0].timeIn = new Date();
-                                docAtt[0].save();
-                                return res.status(200).send('attendance punctual');
-                            }
-                            // Late
-                            else if (Date.now() > docs[0].lateTime && Date.now() <= docs[0].endTime){
-                                docAtt[0].status = 'late';
-                                docAtt[0].timeIn = new Date();
-                                docAtt[0].save();
-                                return res.status(200).send('attendance late');
-                            } else {
-                                console.log('too bad')
-                                return res.status(200).send('attendance closed');
-                            }
+                if (docs[0].status == 'closed' || docs[0].status == 'finished'){
+                    return res.status(200).send('class had not started or has already ended')
+                } else{
+                    // Find the userId from the users table to search the attendance table
+                    User.find({$or:[{name: userName}, {berkeleyId: berkeleyId}]}, function(errUser, docUser){
+                        if(docUser.length){
+                            console.log(docUser)
+                            Attendance.findOneAndUpdate( {$and: [{'subjectName': subjectName}, {'userId': docUser[0].userId}, {'lessonName': lessonName}, {'status': 'absent'}]}, {$set: {status: docs[0].status, timeIn: new Date()}}, function(errAtt, docsAtt){
+                                if (errAtt){
+                                    return res.status(500).send(errAtt)
+                                } else if (docsAtt){
+                                    return res.status(201).send('successfully updated attendance'); 
+                                } else {
+                                    return res.status(409).send('Attendance already recorded'); 
+                                }
+                            });
+                        } else if (errUser){
+                            return res.status(500).send(errUser);
                         } else {
-                            return res.status(409).send('Either invalid IDs or the ID combination does not exist'); 
+                            User.fuzzySearch(userName, function(errUser2, docUser2){
+                                if(docUser2.length){
+                                    const fuzzyUser = docUser2[0];
+                                    Attendance.findOneAndUpdate( {$and: [{'subjectName': subjectName}, {'userId': fuzzyUser.userId}, {'lessonName': lessonName}, {'status': 'absent'}]}, {$set: {status: docs[0].status, timeIn: new Date()}}, function(errAtt2, docsAtt2){
+                                        if (errAtt2){
+                                            return res.status(500).send(errAtt2)
+                                        } else if (docsAtt2){
+                                            return res.status(201).send('successfully updated attendance'); 
+                                        } else {
+                                            return res.status(409).send('Attendance already recorded'); 
+                                        }
+                                    });
+                                } else if (errUser2){
+                                    return res.status(500).send(errUser2);
+                                } else {
+                                    return res.status(404).send('User not found');
+                                }
+                            });
                         }
                     });
-                } else {
-                    return res.status(409).send( 'Seating plans do not match' );
-                }     
+                }
             } else if (err) {
                 return res.status(500).send(err);
             }
@@ -55,7 +58,6 @@ exports.attendanceSubmission = function (req, res) {
                 return res.status(409).send('Either invalid lessonId or the lesson does not exist'); 
             }
         });
-        
     }
     catch (err) {
         return res.status(500).send(err); 

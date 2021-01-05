@@ -2,7 +2,9 @@ const express = require('express');
 let router = express.Router();
 
 const userFunctions = require('../bll/userManagement/userAuxiliary');
-
+const lessonFunctions = require('../bll/lessonManagement/lessonBulkCreation');
+const attendanceFunctions = require('../bll/attendanceManagement/attendanceReset');
+const attendanceAuxiliary = require('../bll/attendanceManagement/attendanceAuxiliary');
 /**
  * @swagger
  * /healthcheck:
@@ -77,5 +79,128 @@ router.get('/user/search', userFunctions.userSearchAuxiliary);
  *        description: Database or server error
  */ 
 router.delete('/user/delete', userFunctions.userDeleteAuxiliary);
+
+/**
+ * @swagger
+ * /lesson/bulk:
+ *  post:
+ *    tags:
+ *      - Auxiliary
+ *    summary: Bulk insertion of lessons
+ *    description: Bulk insertion of fixed lessons based on the constants file. Assumes that subjects already have the lessons
+ *    consumes:
+ *      - application/json
+ *    produces:
+ *      - application/json
+ *    parameters:
+ *      - in: body
+ *        name: Bulk lesson submission body
+ *        description: Array of lessons that are formatted
+ *        schema:
+ *          type: object
+ *          required:
+ *            - lessons
+ *          properties:
+ *            lessons: 
+ *              type: array
+ *              description: Array of lessons that are formatted
+ *              items:
+ *                type: object
+ *                properties:
+ *                  name:
+ *                    type: string
+ *                  subjectName:
+ *                    type: string
+ *                  classDate:
+ *                    type: string
+ *                  status:
+ *                    type: Number
+ *              example:
+ *                - name: class 1
+ *                  subjectName: Entrepreneurial Leadership
+ *                  classDate: 28 Feb 2020
+ *                  status: closed
+ *                - name: class 2
+ *                  subjectName: Entrepreneurial Leadership
+ *                  classDate: 6 March 2020
+ *                  status: closed
+ *                - name: class 3
+ *                  subjectName: Entrepreneurial Leadership
+ *                  classDate: 13 March 2020
+ *                  status: closed
+ *                - name: class 4
+ *                  subjectName: Entrepreneurial Leadership
+ *                  classDate: 3 April 2020
+ *                  status: closed
+ *                - name: class 5
+ *                  subjectName: Entrepreneurial Leadership
+ *                  classDate: 10 April 2020
+ *                  status: closed
+ *    responses:
+ *      200:
+ *        description: attendance status updated
+ *      409:
+ *        description: Ids don;t exist or invalid ID
+ *      500:
+ *        description: Database or server error
+ */ 
+router.post('/lesson/bulk', lessonFunctions.lessonBulkCreation);
+
+/**
+ * @swagger
+ * /attendance/reset:
+ *    put:
+ *      tags:
+ *          - Auxiliary
+ *      summary: Change the status of all attendance records for testing purposes
+ *      description: Take in the status to change to, either absent, punctual or late
+ *      parameters:
+ *        - name: status
+ *          in: query
+ *          description: Status to change to, either absent, punctual or late
+ *          required: true
+ *          schema:
+ *            type: string
+ *            format: string
+ *            example: absent
+ *      responses:
+ *        201:
+ *          description: Successfully updated all status
+ *        409:
+ *          description: No documents to update
+ *        500:
+ *          description: Database or server error
+ * 
+ */
+router.put('/attendance/reset', attendanceFunctions.attendanceReset);
+
+/**
+ * @swagger
+ * /attendance/delete:
+ *  delete:
+ *    tags:
+ *      - Auxiliary
+ *    summary: Delete attendance record for the user based on the userId
+ *    description: Delete attendance record for the user based on the userId. If nothing provided then delete all
+ *    consumes:
+ *      - application/json
+ *    produces:
+ *      - application/json
+ *    parameters:
+ *      - in: query
+ *        name: userId
+ *        schema:
+ *          type: string
+ *          example: X12345
+ *        description: userId that was used to create account
+ *    responses:
+ *      200:
+ *        description: Successful deletion
+ *      409:
+ *        description: User does not exist
+ *      500:
+ *        description: Database or server error
+ */ 
+router.delete('/attendance/delete', attendanceAuxiliary.attendanceDeleteAuxiliary);
 
 module.exports = router;

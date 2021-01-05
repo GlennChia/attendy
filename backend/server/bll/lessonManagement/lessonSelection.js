@@ -2,17 +2,17 @@ const Attendance = require('../../database/models/attendanceModel');
 
 exports.lessonSelect = function (req, res) {
     const{body} = req;
-    const{ userId, subjectId, lessonId } = body;
+    const{ userId, subjectName, lessonName } = body;
 
     let attendance = new Attendance({
         userId: userId,
-        subjectId: subjectId,
-        lessonId: lessonId,
+        subjectName: subjectName,
+        lessonName: lessonName,
     });
 
     console.log(attendance)
     try{
-        Attendance.find( { $and: [{'userId' : userId }, {'subjectId': subjectId}, {'lessonId': lessonId}]}, function (err, docs) {
+        Attendance.find( { $and: [{'userId' : userId }, {'subjectName': subjectName}, {'lessonName': lessonName}]}, function (err, docs) {
             if (!docs.length){
                 attendance.save(function (err) {
                     if (err) {

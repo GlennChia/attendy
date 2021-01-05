@@ -7,16 +7,18 @@ const Schema = mongoose.Schema;
 *  Attendance:
 *    type: object
 *    required:
-*      - subjectId
-*      - classId
+*      - subjectName
+*      - lessonName
+*      - userName
+*      - berkeleyId
 *      - userId
 *    properties:
-*      subjectId:
+*      subjectName:
 *        type: string
-*        example: 5e508c5c708f0c14dc8fe244
-*      lessonId:
+*        example: Entrepreneurial Leadership
+*      lessonName:
 *        type: string
-*        example: 5e50df1fe2828024f8a5dd66
+*        example: class 1
 *      userId:
 *        type: string
 *        example: X12345
@@ -26,10 +28,18 @@ const Schema = mongoose.Schema;
 *      timeIn:
 *        type: string
 *        example: ''
+*      userName:
+*        type: string
+*        example: Glenn 
+*      berkeleyId:
+*        type: string
+*        example: '1231412312312'
 */
 let Attendance = new Schema({
-    subjectId: {type: String},
-    lessonId: {type: String},
+    subjectName: {type: String},
+    lessonName: {type: String},
+    userName: {type: String},
+    berkeleyId: {type: String},
     userId: {type: String},
     status: {type: String, default: 'absent'},
     timeIn: {type: Date, default: ''},
